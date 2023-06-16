@@ -20,7 +20,7 @@ export const parseData = async (rawData, format = 'auto') => {
   let data = '';
   if (format === 'auto') {
     try {
-      data = JSON.parse(rawData);
+      data = JSON.stringify(JSON.parse(rawData));
     } catch {
       try {
         const indexOfComma = rawData.indexOf(',');
