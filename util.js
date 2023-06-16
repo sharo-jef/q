@@ -63,8 +63,12 @@ export const parseData = async (rawData, format = 'auto') => {
 export const format = (result, outputFormat = '') => {
   // eslint-disable-next-line no-param-reassign
   outputFormat = outputFormat.toLowerCase();
-  // eslint-disable-next-line no-param-reassign
-  result = JSON.parse(result);
+  try {
+    // eslint-disable-next-line no-param-reassign
+    result = JSON.parse(result);
+  } catch {
+    return result;
+  }
   if (outputFormat === 'json') {
     return JSON.stringify(result, void 0, 2);
   }
