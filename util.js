@@ -60,7 +60,7 @@ export const parseData = async (rawData, format = 'auto') => {
 };
 
 // eslint-disable-next-line no-shadow
-export const format = (result, outputFormat = '') => {
+export const format = (result, outputFormat = '', header = false) => {
   // eslint-disable-next-line no-param-reassign
   outputFormat = outputFormat.toLowerCase();
   try {
@@ -76,7 +76,7 @@ export const format = (result, outputFormat = '') => {
     return YAML.stringify(result);
   }
   if (outputFormat === 'csv') {
-    return csv.stringify(result);
+    return csv.stringify(result, { header });
   }
   if (outputFormat === 'ltsv') {
     return ltsv.stringify(result);

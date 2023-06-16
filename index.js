@@ -34,7 +34,7 @@ const action = async (query = '.', file = '', options = {}) => {
   if (options.format.toLowerCase() === 'json' && options.raw) {
     console.log(await jq.run('.', result, { input: 'string', raw: true }));
   } else {
-    console.log(await format(result, options.format));
+    console.log(await format(result, options.format, options.header));
   }
 };
 
@@ -44,7 +44,8 @@ program
   .option('-s, --slurp', 'Read (slurp) all inputs into an array')
   .option('-S, --sort', 'Sort keys of objects on output')
   .option('-i, --input-format <format>', 'Input format (JSON, YAML, CSV, LTSV)')
-  .option('-f, --format <format>', 'Output format (JSON, YAML, CSV, LTSV', 'JSON')
+  .option('-f, --format <format>', 'Output format (JSON, YAML, CSV, LTSV)', 'JSON')
+  .option('-H, --header', 'Enable header (CSV)')
   .argument('[query]', 'Query string (SQL or jq)', value => value, '.')
   .argument('[file]', 'File name')
   .action(action)
