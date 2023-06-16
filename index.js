@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 
 import alasql from 'alasql';
 import { program } from 'commander';
+import { getInstalledPath } from 'get-installed-path';
 import jq from 'node-jq';
 import NodeSQLParser from 'node-sql-parser';
 
@@ -41,7 +42,7 @@ const action = async (query = '.', file = '', options = {}) => {
 };
 
 program
-  .version(JSON.parse(await readFile('package.json')).version, '-v, --version')
+  .version(JSON.parse(await readFile(`${await getInstalledPath('q')}/package.json`)).version, '-v, --version')
   .option('-r, --raw', 'Output raw strings, not JSON texts')
   .option('-s, --slurp', 'Read (slurp) all inputs into an array')
   .option('-S, --sort', 'Sort keys of objects on output')
