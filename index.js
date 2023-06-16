@@ -46,7 +46,7 @@ program
   .option('-S, --sort', 'Sort keys of objects on output')
   .option('-i, --input-format <format>', 'Input format (JSON, YAML, CSV, LTSV)')
   .option('-f, --format <format>', 'Output format (JSON, YAML, CSV, LTSV', 'JSON')
-  .argument('[query]', 'Query string (SQL or jq)')
+  .argument('[query]', 'Query string (SQL or jq)', value => value, '.')
   .argument('[file]', 'File name')
   .action(action)
   .parse(process.argv);
