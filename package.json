@@ -28,7 +28,6 @@
     "commander": "^11.0.0",
     "dotenv": "^16.1.4",
     "eslint-plugin-import": "^2.27.5",
-    "get-installed-path": "^4.0.8",
     "json-sql-query": "^2.0.0",
     "ltsv": "^2.0.0",
     "node-jq": "^2.3.5",
