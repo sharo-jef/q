@@ -12,7 +12,13 @@ export const readFromFile = filename => {
   }
 };
 
-export const readFromStdin = () => readFileSync(process.stdin.fd, 'utf-8');
+export const readFromStdin = () => {
+  try {
+    return readFileSync(process.stdin.fd, 'utf-8');
+  } catch {
+    throw new Error('Failed to load data');
+  }
+};
 
 export const parseData = async (rawData, format = 'auto') => {
   // eslint-disable-next-line no-param-reassign
