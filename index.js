@@ -30,7 +30,8 @@ const action = async (query = '.', file = '', options = {}) => {
     const ast = parser.astify(query);
     ast.from = [{ db: null, table: '__IN_MEMORY_TABLE__', as: null }];
     const sql = parser.sqlify(ast);
-    result = JSON.stringify(alasql(sql.replace('`__IN_MEMORY_TABLE__`', '?'), [JSON.parse(data)]));
+    const parsedData = JSON.parse(data);
+    result = JSON.stringify(alasql(sql.replace('`__IN_MEMORY_TABLE__`', '?'), [parsedData instanceof Array ? parsedData : [parsedData]]));
   }
   if (options.format.toLowerCase() === 'json' && options.raw) {
     console.log(await jq.run('.', result, { input: 'string', raw: true }));
