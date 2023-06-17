@@ -31,7 +31,7 @@
     "json-sql-query": "^2.0.0",
     "ltsv": "^2.0.0",
     "node-jq": "^2.3.5",
-    "node-sql-parser": "^3.9.4",
+    "node-sql-parser": "^4.7.0",
     "yaml": "^2.3.1"
   },
   "type": "module"
