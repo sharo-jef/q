@@ -12,7 +12,7 @@ import {
 } from './util.js';
 
 const action = async (query = '.', file = '', options = {}) => {
-  const rawData = file ? readFromFile(file) : readFromStdin();
+  const rawData = file ? await readFromFile(file) : await readFromStdin();
   const data = await parseData(rawData, options?.inputFormat);
   let result = '';
   try {

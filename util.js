@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 
 import csv from 'async-csv';
 import ltsv from 'ltsv';
@@ -6,18 +6,19 @@ import YAML from 'yaml';
 
 export const readFromFile = filename => {
   try {
-    return readFileSync(filename, 'utf-8');
+    return readFile(filename, 'utf-8');
   } catch {
     throw new Error(`Could not read from file: ${filename}`);
   }
 };
 
-export const readFromStdin = () => {
-  try {
-    return readFileSync(process.stdin.fd, 'utf-8');
-  } catch {
-    throw new Error('Failed to load data');
+export const readFromStdin = async () => {
+  process.stdin.setEncoding('utf-8');
+  let text = '';
+  for await (const chunk of process.stdin) {
+    text += chunk;
   }
+  return text;
 };
 
 export const parseData = async (rawData, format = 'auto') => {
