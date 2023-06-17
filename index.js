@@ -15,21 +15,23 @@ const action = async (query = '.', file = '', options = {}) => {
   const rawData = file ? await readFromFile(file) : await readFromStdin();
   const data = await parseData(rawData, options?.inputFormat);
   let result = '';
+  const jqOptions = {
+    input: 'string',
+    slurp: options?.slurp,
+    sort: options?.sort,
+  };
   try {
-    const jqOptions = {
-      input: 'string',
-      slurp: options?.slurp,
-      sort: options?.sort,
-    };
     result = await jq.run(query, data, jqOptions);
   } catch {
     // if failed or query cannot be parsed
     const parser = new NodeSQLParser.Parser();
-    const ast = parser.astify(query);
+    const [rawSql, ...jqQuery] = query.split('|');
+    const ast = parser.astify(rawSql);
     ast.from = [{ db: null, table: '__IN_MEMORY_TABLE__', as: null }];
-    const sql = parser.sqlify(ast);
+    const sql = parser.sqlify(ast).replace('`__IN_MEMORY_TABLE__`', '?');
     const parsedData = JSON.parse(data);
-    result = JSON.stringify(alasql(sql.replace('`__IN_MEMORY_TABLE__`', '?'), [parsedData instanceof Array ? parsedData : [parsedData]]));
+    result = JSON.stringify(alasql(sql, [parsedData instanceof Array ? parsedData : [parsedData]]));
+    result = await jq.run(jqQuery.join('|'), result, jqOptions);
   }
   if (options.format.toLowerCase() === 'json' && options.raw) {
     console.log(await jq.run('.', result, { input: 'string', raw: true }));
