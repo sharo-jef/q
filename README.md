@@ -75,3 +75,9 @@ author,type
 sharo_jef,module
 
 ```
+
+## Installation
+
+```bash
+npm i -g @sharo-jef/q
+```
