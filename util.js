@@ -21,7 +21,7 @@ export const readFromStdin = async () => {
   return text;
 };
 
-export const parseData = async (rawData, format = 'auto') => {
+export const parseData = async (rawData, format = 'auto', cast = false) => {
   // eslint-disable-next-line no-param-reassign
   format = format.toLowerCase();
   let data = '';
@@ -32,7 +32,7 @@ export const parseData = async (rawData, format = 'auto') => {
       try {
         const indexOfComma = rawData.indexOf(',');
         if (indexOfComma !== -1 && indexOfComma < rawData.indexOf('\n')) {
-          data = JSON.stringify(await csv.parse(rawData, { columns: true, delimiter: ',' }));
+          data = JSON.stringify(await csv.parse(rawData, { columns: true, delimiter: ',', cast }));
         } else {
           throw new Error();
         }
@@ -61,7 +61,7 @@ export const parseData = async (rawData, format = 'auto') => {
 };
 
 // eslint-disable-next-line no-shadow
-export const format = (result, outputFormat = '', header = false) => {
+export const format = (result, outputFormat = '', header = false, compact = false) => {
   // eslint-disable-next-line no-param-reassign
   outputFormat = outputFormat.toLowerCase();
   try {
@@ -71,6 +71,9 @@ export const format = (result, outputFormat = '', header = false) => {
     return result;
   }
   if (outputFormat === 'json') {
+    if (compact) {
+      return JSON.stringify(result);
+    }
     return JSON.stringify(result, void 0, 2);
   }
   if (outputFormat === 'yaml' || outputFormat === 'yml') {

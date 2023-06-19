@@ -13,12 +13,13 @@ import {
 
 const action = async (query = '.', file = '', options = {}) => {
   const rawData = file ? await readFromFile(file) : await readFromStdin();
-  const data = await parseData(rawData, options?.inputFormat);
+  const data = await parseData(rawData, options?.inputFormat, options?.cast ?? false);
   let result = '';
   const jqOptions = {
     input: 'string',
     slurp: options?.slurp,
     sort: options?.sort,
+    output: options?.compact ? 'compact' : 'pretty',
   };
   try {
     result = await jq.run(query, data, jqOptions);
@@ -34,20 +35,22 @@ const action = async (query = '.', file = '', options = {}) => {
     result = await jq.run(jqQuery.join('|'), result, jqOptions);
   }
   if (options.format.toLowerCase() === 'json' && options.raw) {
-    console.log(await jq.run('.', result, { input: 'string', raw: true }));
+    console.log(await jq.run('.', result, { ...jqOptions, raw: true }));
   } else {
-    console.log(await format(result, options.format, options.header));
+    console.log(await format(result, options.format, options.header, options.compact));
   }
 };
 
 program
-  .version('0.0.3', '-v, --version')
+  .version('0.0.4', '-v, --version')
   .option('-r, --raw', 'Output raw strings, not JSON texts')
   .option('-s, --slurp', 'Read (slurp) all inputs into an array')
   .option('-S, --sort', 'Sort keys of objects on output')
   .option('-i, --input-format <format>', 'Input format (JSON, YAML, CSV, LTSV)')
   .option('-f, --format <format>', 'Output format (JSON, YAML, CSV, LTSV)', 'JSON')
   .option('-H, --header', 'Enable header (CSV)')
+  .option('-c, --compact', 'Compact instead of pretty-printed output')
+  .option('-C, --cast', 'Cast (CSV input)')
   .argument('[query]', 'Query string (SQL or jq)', value => value, '.')
   .argument('[file]', 'File name')
   .action(action)
