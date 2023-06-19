@@ -41,7 +41,7 @@ const action = async (query = '.', file = '', options = {}) => {
 };
 
 program
-  .version('0.0.1', '-v, --version')
+  .version('0.0.2', '-v, --version')
   .option('-r, --raw', 'Output raw strings, not JSON texts')
   .option('-s, --slurp', 'Read (slurp) all inputs into an array')
   .option('-S, --sort', 'Sort keys of objects on output')
