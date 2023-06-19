@@ -1,5 +1,5 @@
 {
-  "name": "node-template",
+  "name": "@q/cli",
   "version": "0.0.1",
   "description": "Query various data.",
   "main": "index.js",
