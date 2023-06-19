@@ -1,6 +1,6 @@
 {
   "name": "@sharo-jef/q",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Query various data.",
   "main": "index.js",
   "scripts": {
