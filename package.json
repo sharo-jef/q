@@ -27,6 +27,7 @@
     "commander": "^11.0.0",
     "dotenv": "^16.3.0",
     "eslint-plugin-import": "^2.27.5",
+    "glob": "^10.3.0",
     "ltsv": "^2.0.0",
     "node-jq": "^2.3.5",
     "node-sql-parser": "^4.7.0",
